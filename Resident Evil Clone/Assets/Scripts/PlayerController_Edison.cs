@@ -11,6 +11,8 @@ public class PlayerController_Edison : MonoBehaviour
     [SerializeField] float verticalLookLimit;
     [SerializeField] Transform fpsCamera;
 
+    [SerializeField] Transform firePoint;
+
     private bool isGrounded;
     private float xRotation;
     private Rigidbody rb;
@@ -30,6 +32,10 @@ public class PlayerController_Edison : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Jump();
+        }
+        if(Input.GetMouseButtonDown(0))
+        {
+            Shoot(1);
         }
     }
     private void LookAround()
@@ -71,6 +77,19 @@ public class PlayerController_Edison : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+        }
+    }
+
+    private void Shoot(float damage)
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 100))
+        {
+            Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
+            if (hit.transform.CompareTag("Zombie"))
+            {
+                hit.transform.GetComponent<Zombie_Edison>().TakeDamage(damage);
+            }
         }
     }
 }
