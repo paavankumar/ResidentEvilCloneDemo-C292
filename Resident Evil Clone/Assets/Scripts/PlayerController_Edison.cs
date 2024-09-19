@@ -12,6 +12,7 @@ public class PlayerController_Edison : MonoBehaviour
     [SerializeField] Transform fpsCamera;
 
     [SerializeField] private Transform firePoint;
+    [SerializeField] private GameObject Projectile;
 
     private bool isGrounded;
     private float xRotation;
@@ -92,5 +93,11 @@ public class PlayerController_Edison : MonoBehaviour
                 hit.transform.GetComponent<Zombie_Edison>().TakeDamage(1);
             }
         }
+    }
+
+    private void ShootBullet()
+    {
+        GameObject bullet = Instantiate(Projectile, firePoint.position, firePoint.rotation);
+        bullet.GetComponent<Rigidbody>().AddForce(firePoint.forward * 10, ForceMode.Impulse);
     }
 }
