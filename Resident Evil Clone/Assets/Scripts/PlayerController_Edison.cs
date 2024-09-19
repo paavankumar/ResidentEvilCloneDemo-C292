@@ -6,10 +6,12 @@ public class PlayerController_Edison : MonoBehaviour
 {
     [SerializeField] float moveSpeed = 5f;
     [SerializeField] float jumpForce = 5f;
-    [SerializeField] float mouseSensity = 60f;
+    [SerializeField] float mouseSensitivity = 60f;
 
     [SerializeField] float verticalLookLimit;
     [SerializeField] Transform fpsCamera;
+
+    [SerializeField] private Transform firePoint;
 
     private bool isGrounded;
     private float xRotation;
@@ -31,11 +33,16 @@ public class PlayerController_Edison : MonoBehaviour
         {
             Jump();
         }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
+        }
     }
     private void LookAround()
     {
-        float mouseX = Input.GetAxis("Mouse X") * mouseSensity * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * mouseSensity * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity * Time.deltaTime;
 
         transform.Rotate(Vector3.up * mouseX);
         xRotation -= mouseY;
@@ -71,6 +78,19 @@ public class PlayerController_Edison : MonoBehaviour
         if (collision.gameObject.CompareTag("Ground"))
         {
             isGrounded = true;
+        }
+    }
+
+    private void Shoot()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(firePoint.position, fpsCamera.forward, out hit, 100))
+        {
+            Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
+            if (hit.transform.CompareTag("Zombie"))
+            {
+                hit.transform.GetComponent<Zombie_Edison>().TakeDamage(1);
+            }
         }
     }
 }
