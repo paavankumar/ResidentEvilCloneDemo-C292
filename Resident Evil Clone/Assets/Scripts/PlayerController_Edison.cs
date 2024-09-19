@@ -85,7 +85,7 @@ public class PlayerController_Edison : MonoBehaviour
     private void Shoot()
     {
         RaycastHit hit;
-        if (Physics.Raycast(firePoint.position, fpsCamera.forward, out hit, 100))
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 100))
         {
             Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
             if (hit.transform.CompareTag("Zombie"))
