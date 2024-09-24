@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] Transform fpsCamera;
     private Rigidbody rb;
 
+    [SerializeField] private Transform firePoint;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +33,10 @@ public class PlayerController : MonoBehaviour
         if (Input.GetButtonDown("Jump") && isGrounded)
         {
             Jump();
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            Shoot();
         }
     }
 
@@ -82,5 +88,31 @@ public class PlayerController : MonoBehaviour
         {
             isGrounded = false;
         }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        m_Rigidbody = GetComponent<Rigidbody>();
+        m_Rigidbody.AddForce(transform.forward * -10);
+    }
+
+    private void Shoot()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(firePoint.position, firePoint.forward, out hit, 100))
+        {
+            Debug.DrawRay(firePoint.position, firePoint.forward * hit.distance, Color.red, 2f);
+            if (hit.transform.CompareTag("Zombie"))
+            {
+                hit.transform.GetComponent<Enemy>().TakeDamage(1);
+            }
+        }
+    }
+
+    private void ShootBullet()
+    {
+       GameObject bullet = Instantiate(Projectile, firePoint.position, firePoint.forward);
+       bullet.GetComponent<Rigidbody>().AddForce(firePoint.forward * 10, ForceMode.Impulse);
     }
 }
