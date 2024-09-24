@@ -611,7 +611,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 0
-  moveSpeed: 10
+  moveSpeed: 7.5
   jumpForce: 5
   mouseSensitivity: 500
   verticalLookLimit: 60
@@ -1600,7 +1600,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 100
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
